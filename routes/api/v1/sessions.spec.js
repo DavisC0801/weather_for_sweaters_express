@@ -28,7 +28,7 @@ describe('api', () => {
           password: "password",
         }))
         .then(response => {
-          expect(response.statusCode).toBe(201);
+          expect(response.statusCode).toBe(200);
         });
       });
     });
