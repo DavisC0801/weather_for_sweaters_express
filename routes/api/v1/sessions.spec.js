@@ -9,6 +9,7 @@ describe('api', () => {
 
   beforeEach(() => {
     shell.exec('npx sequelize db:migrate');
+    shell.exec('npx sequelize db:seed:all');
   });
 
   afterEach(() => {
@@ -19,13 +20,12 @@ describe('api', () => {
     shell.exec('npx sequelize db:drop');
   })
 
-  describe('api v1 users create path', () => {
+  describe('api v1 sessions create path', () => {
     test('it should respond to a post request', () => {
-      return request(app).post('/api/v1/users', (req, res) => {
+      return request(app).post('/api/v1/sessions', (req, res) => {
         req.send(JSON.stringify({
           email: "test@test.com",
           password: "password",
-          password_confirmation: "password"
         }))
         .then(response => {
           expect(response.statusCode).toBe(201);
@@ -34,11 +34,10 @@ describe('api', () => {
     });
 
     test('it should send an API key if valid info is sent', () => {
-      return request(app).post('/api/v1/users', (req, res) => {
+      return request(app).post('/api/v1/sessions', (req, res) => {
         req.send(JSON.stringify({
           email: "test@test.com",
           password: "password",
-          password_confirmation: "password"
         }))
       .then(response => {
         expect(response.body.length).toEqual(1),
@@ -47,12 +46,11 @@ describe('api', () => {
       });
     });
 
-    test('it should send an error if invalid password confirmation is sent', () => {
-      return request(app).post('/api/v1/users', (req, res) => {
+    test('it should send an error if invalid email is sent', () => {
+      return request(app).post('/api/v1/sessions', (req, res) => {
         req.send(JSON.stringify({
-          email: "test@test.com",
+          email: "notmytest@test.com",
           password: "password",
-          password_confirmation: "notmypassword"
         }))
       .then(response => {
         expect(response.body.length).toEqual(1),
@@ -61,12 +59,11 @@ describe('api', () => {
       });
     });
 
-    test('it should send an error if invalid email is sent', () => {
-      return request(app).post('/api/v1/users', (req, res) => {
+    test('it should send an error if invalid password is sent', () => {
+      return request(app).post('/api/v1/sessions', (req, res) => {
         req.send(JSON.stringify({
-          email: "12345",
-          password: "password",
-          password_confirmation: "password"
+          email: "test@test.com",
+          password: "notmypassword",
         }))
       .then(response => {
         expect(response.body.length).toEqual(1),
@@ -76,7 +73,7 @@ describe('api', () => {
     });
 
     test('it should send an error if no data is sent', () => {
-      return request(app).post('/api/v1/users', (req, res) => {
+      return request(app).post('/api/v1/sessions', (req, res) => {
         req.send()
       .then(response => {
         expect(response.body.length).toEqual(1),
