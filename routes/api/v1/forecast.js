@@ -1,5 +1,5 @@
 const express = require('express');
-var fetch = require("node-fetch");
+const fetch = require("node-fetch");
 const router = express.Router();
 const user = require('../../../models').User;
 const Forecast = require('../../../lib/forecast');
