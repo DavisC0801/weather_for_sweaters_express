@@ -35,11 +35,11 @@ router.get('/', function(req, res) {
     })
     .catch(error => {
       res.setHeader("Content-Type", "application/json");
-      res.status(500).send(JSON.stringify(error));
+      res.status(401).send(JSON.stringify({error: "Invalid Information"}));
     });
   } else {
     res.setHeader("Content-Type", "application/json");
-    res.status(406).send(JSON.stringify({error: "Invalid Information"}));
+    res.status(401).send(JSON.stringify({error: "Invalid Information"}));
   };
 });
 
