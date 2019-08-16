@@ -39,7 +39,7 @@ router.get('/', function(req, res) {
     });
   } else {
     res.setHeader("Content-Type", "application/json");
-    res.status(406).send(JSON.stringify({error: "Invalid Email/Password Combination"}));
+    res.status(406).send(JSON.stringify({error: "Invalid Information"}));
   };
 });
 
