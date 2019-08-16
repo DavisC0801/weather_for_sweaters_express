@@ -3,7 +3,7 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.addColumn(
-         'favorites',
+         'Favorites',
          'UserId',
          {
           type: Sequelize.INTEGER,
@@ -19,7 +19,7 @@ module.exports = {
 
   down: (queryInterface, Sequelize) => {
     return queryInterface.removeColumn(
-      "favorites",
+      "Favorites",
       "UserId"
     );
   }

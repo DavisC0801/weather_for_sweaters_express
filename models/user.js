@@ -3,7 +3,7 @@ module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define('User', {
     email: {
       type: DataTypes.STRING,
-      allowNull: true,
+      allowNull: false,
       validate: {
         isEmail: true,
       }
@@ -18,7 +18,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   }, {});
   User.associate = function(models) {
-    User.hasMany(models.Favorites, {as: 'favorites'})
+    User.hasMany(models.Favorite, {as: 'favorite'})
   };
   return User;
 };
