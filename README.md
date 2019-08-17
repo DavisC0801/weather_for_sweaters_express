@@ -24,6 +24,7 @@ The following endpoints are exposed on this API:
 * /api/v1/users
 * /api/v1/sessions
 * /api/v1/forecast
+* /api/v1/favorites
 
 #### /api/v1/users
 This endpoint takes a post request, and a username, password and password confirmation in the body of the request. It returns a generated API key if the user is saved successfully, and an error message if not.
@@ -32,4 +33,7 @@ This endpoint takes a post request, and a username, password and password confir
 This endpoint takes a post request, and a username and password in the body of the request. It returns the saved API key if the user is successfully validated, and an error message if not.
 
 #### /api/v1/forecast
-This endpoint takes location as a query param, in the format of city,state. It returns current, hourly, and daily forecast information for the city.
+This endpoint takes location as a query param, in the format of city,state. It also requires a valid API key in the body of the get request. It returns current, hourly, and daily forecast information for the city.
+
+#### /api/v1/favorites
+This endpoint takes a post request with a location in the format of city, state. It also requires a valid API key. If successful, this endpoint will add the requested city to your favorites for later use.
