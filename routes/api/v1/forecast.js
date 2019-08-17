@@ -1,5 +1,5 @@
 const express = require('express');
-var fetch = require("node-fetch");
+const fetch = require("node-fetch");
 const router = express.Router();
 const user = require('../../../models').User;
 const Forecast = require('../../../lib/forecast');
@@ -35,11 +35,11 @@ router.get('/', function(req, res) {
     })
     .catch(error => {
       res.setHeader("Content-Type", "application/json");
-      res.status(500).send(JSON.stringify(error));
+      res.status(401).send(JSON.stringify({error: "Invalid Information"}));
     });
   } else {
     res.setHeader("Content-Type", "application/json");
-    res.status(406).send(JSON.stringify({error: "Invalid Information"}));
+    res.status(401).send(JSON.stringify({error: "Invalid Information"}));
   };
 });
 
