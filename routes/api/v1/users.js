@@ -12,14 +12,21 @@ router.post('/', function(req, res) {
       }
     }).then(existingUser => {
       if (req.body.password === req.body.password_confirmation && existingUser === null){
-        user.create({
-          email: req.body.email,
-          password: bcrypt.hashSync(req.body.password, 10),
-          apiKey: crypto.randomBytes(14).toString('hex')
-        })
-        .then(user => {
-          res.setHeader("Content-Type", "application/json");
-          res.status(201).send(JSON.stringify({api_key: user.apiKey}));
+        bcrypt.hash(req.body.password, 10)
+        .then(password => {
+          user.create({
+            email: req.body.email,
+            password: password,
+            apiKey: crypto.randomBytes(14).toString('hex')
+          })
+          .then(user => {
+            res.setHeader("Content-Type", "application/json");
+            res.status(201).send(JSON.stringify({api_key: user.apiKey}));
+          })
+          .catch(error => {
+            res.setHeader("Content-Type", "application/json");
+            res.status(500).send(JSON.stringify({error}));
+          });
         })
         .catch(error => {
           res.setHeader("Content-Type", "application/json");
