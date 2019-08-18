@@ -90,11 +90,39 @@ describe('api', () => {
         api_key: "12345",
       }))
       .then(response => {
-        expect(response.body.length).toEqual(2),
+        expect(response.body.length).toEqual(1),
         expect(Object.keys(response.body[0])).toContain('location')
         expect(Object.keys(response.body[0])).toContain('current weather')
         expect(Object.keys(response.body[1])).toContain('location')
         expect(Object.keys(response.body[1])).toContain('current weather')
+        });
+      });
+    });
+
+    test('it should send an error if an invalid API key is sent', () => {
+    return request(app).post('/api/v1/favorites', (req, res) => {
+      req.send(JSON.stringify({
+        api_key: "54321",
+      }))
+      .then(response => {
+        expect(response.body.length).toEqual(1),
+        expect(Object.keys(response.body[0])).toContain('error')
+        });
+      });
+    });
+  });
+
+  describe('api v1 favorites delete path', () => {
+    test('it should delete a favorite if valid data is sent', () => {
+    return request(app).post('/api/v1/favorites', (req, res) => {
+      req.send(JSON.stringify({
+        location: "Denver, CO",
+        api_key: "12345",
+      }))
+      .then(response => {
+        expect(response.body.length).toEqual(1),
+        expect(Object.keys(response.body[0])).toContain('location')
+        expect(Object.keys(response.body[0])).toContain('current weather')
         });
       });
     });
