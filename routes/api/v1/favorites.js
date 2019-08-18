@@ -69,21 +69,24 @@ router.get('/', function(req, res) {
     }).then(favorites => {
       if(favorites !== undefined){
         let forecast = new Forecast()
-        favorites.forEach(function(city){
-          fetch(`https://api.darksky.net/forecast/${process.env.DARKSKY_API_KEY}/${city["dataValues"]["latitude"]},${city["dataValues"]["longitude"]}?exclude=minutely,hourly,daily`)
-          .then(res => res.json())
-          .then(data => {
-            forecast.addFavorite(data, city["dataValues"]["location"])
-          })
-          .catch(error => {
-            res.setHeader("Content-Type", "application/json");
-            res.status(401).send(JSON.stringify({error}));
-          });
-        })
-        setTimeout(function(){
+        var favoriteForecasts = [];
+        favorites.forEach(city => {
+          favoriteForecasts.push(
+            fetch(`https://api.darksky.net/forecast/${process.env.DARKSKY_API_KEY}/${city["dataValues"]["latitude"]},${city["dataValues"]["longitude"]}?exclude=minutely,hourly,daily`)
+            .then(res => res.json())
+            .then(data => {
+              forecast.addFavorite(data, city["dataValues"]["location"])
+            })
+            .catch(error => {
+              res.setHeader("Content-Type", "application/json");
+              res.status(401).send(JSON.stringify({error}));
+            })
+          );
+        });
+        Promise.all(favoriteForecasts).then(() => {
           res.setHeader("Content-Type", "application/json");
           res.status(200).send(JSON.stringify(forecast.favoritesForecast()));
-        }, 500)
+        });
       } else {
         res.setHeader("Content-Type", "application/json");
         res.status(401).send(JSON.stringify({error: "No favorites cities found"}));
