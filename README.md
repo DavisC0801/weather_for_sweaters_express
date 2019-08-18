@@ -36,4 +36,8 @@ This endpoint takes a post request, and a username and password in the body of t
 This endpoint takes location as a query param, in the format of city,state. It also requires a valid API key in the body of the get request. It returns current, hourly, and daily forecast information for the city.
 
 #### /api/v1/favorites
-This endpoint takes a post request with a location in the format of city, state. It also requires a valid API key. If successful, this endpoint will add the requested city to your favorites for later use.
+This endpoint takes a post request with a location in the format of city, state. It also requires a valid API key. If successful, this endpoint will add the requested city to the user's favorites for later use.
+
+This endpoint also will accept a get request with a valid API key. If successful, this endpoint will return the current weather for all cities in the users favorites.
+
+Finally, this endpoint will accept a delete request with a location in the format of city, state and a valid API key. If successful, this endpoint will delete the requested city from the user's favorites list.
