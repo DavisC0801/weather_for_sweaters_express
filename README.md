@@ -17,6 +17,9 @@ An API for weather reports using Node.Js and Express.
 * As an Express app, you are able to start the server using the following command:
 > npm start
 
+* This application is deployed [here](https://weatherforsweatersexpress.herokuapp.com/).
+* The project board for this application is located [here](https://github.com/DavisC0801/weather_for_sweaters_express/projects/1).
+
 ## Endpoints
 
 The following endpoints are exposed on this API:
