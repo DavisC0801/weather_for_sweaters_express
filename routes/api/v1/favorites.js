@@ -100,4 +100,38 @@ router.get('/', function(req, res) {
   };
 });
 
+router.delete('/', function(req, res) {
+  if (req.body.api_key !== undefined){
+    favorite.findOne({
+      where: {
+        '$user.apiKey$': req.body.api_key,
+        location: req.body.location
+      },
+      include: ['user']
+    }).then(favorite => {
+      if (favorite !== null) {
+        favorite.destroy({ force: true })
+        .then(() => {
+          res.setHeader("Content-Type", "application/json");
+          res.status(204).send();
+        })
+        .catch(error => {
+          res.setHeader("Content-Type", "application/json");
+          res.status(406).send(JSON.stringify({error: "Could not delete location"}));
+        });
+      } else {
+        res.setHeader("Content-Type", "application/json");
+        res.status(406).send(JSON.stringify({error: "Could not delete location"}));
+      }
+    })
+    .catch(error => {
+      res.setHeader("Content-Type", "application/json");
+      res.status(401).send(JSON.stringify({error: "Invalid Information"}));
+    });
+  } else {
+    res.setHeader("Content-Type", "application/json");
+    res.status(401).send(JSON.stringify({error: "Invalid Information"}));
+  };
+});
+
 module.exports = router;
