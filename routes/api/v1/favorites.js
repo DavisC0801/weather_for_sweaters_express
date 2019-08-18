@@ -21,12 +21,11 @@ router.post('/', function(req, res) {
         let coordinates = data["results"][0]["geometry"]["location"]
         favorite.findOrCreate({
           where: {
-            location: req.body.location
+            location: req.body.location,
+            latitude: coordinates["lat"].toString(),
+            longitude: coordinates["lng"].toString(),
+            UserId: user.id
           },
-          location: req.body.location,
-          latitude: coordinates["lat"],
-          longitude: coordinates["lng"],
-          UserId: user.id
         })
         .then(([favorite, created]) => {
           if (created) {
