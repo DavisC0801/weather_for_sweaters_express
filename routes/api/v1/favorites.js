@@ -83,13 +83,18 @@ router.get('/', function(req, res) {
             })
           );
         });
-        Promise.all(favoriteForecasts).then(() => {
-          res.setHeader("Content-Type", "application/json");
-          res.status(200).send(JSON.stringify(forecast.favoritesForecast()));
+        Promise.all(favoriteForecasts).then(forecastArray => {
+          if (forecastArray.length > 0) {
+            res.setHeader("Content-Type", "application/json");
+            res.status(200).send(JSON.stringify(forecast.favoritesForecast()));
+          } else {
+            res.setHeader("Content-Type", "application/json");
+            res.status(406).send(JSON.stringify({error: "No favorites cities found"}));
+          }
         });
       } else {
         res.setHeader("Content-Type", "application/json");
-        res.status(401).send(JSON.stringify({error: "No favorites cities found"}));
+        res.status(406).send(JSON.stringify({error: "No favorites cities found"}));
       }
     })
     .catch(error => {
